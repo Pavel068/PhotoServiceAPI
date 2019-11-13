@@ -27,6 +27,20 @@ class UserController extends Controller
         }
     }
 
+    /*
+     * Logout api
+     */
+    public function logout()
+    {
+        if (Auth::check()) {
+            Auth::user()->AauthAcessToken()->delete();
+        }
+
+        return response()->json([
+            'status' => true
+        ], 200);
+    }
+
     /**
      * Register api
      *
@@ -51,16 +65,5 @@ class UserController extends Controller
             'id' => $user->id,
             'token' => $user->createToken('MyApp')->accessToken
         ], 201);
-    }
-
-    /**
-     * details api
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function details()
-    {
-        $user = Auth::user();
-        return response()->json(['success' => $user], $this->successStatus);
     }
 }
