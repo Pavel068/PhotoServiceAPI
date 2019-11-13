@@ -15,14 +15,14 @@ class CreatePhotosTable extends Migration
     {
         Schema::create('photos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id');
+            $table->bigInteger('owner_id');
             $table->string('name')->default('Untitled');
             $table->string('url');
             $table->timestamps();
         });
 
         Schema::table('photos', function (Blueprint $table) {
-            $table->index('user_id');
+            $table->index('owner_id');
         });
     }
 

@@ -20,6 +20,7 @@ class UserController extends Controller
         if (Auth::attempt(['phone' => request('phone'), 'password' => request('password')])) {
             $user = Auth::user();
             return response()->json([
+                'token' => $user->createToken('MyApp')->accessToken,
                 'user' => $user
             ], 200);
         } else {
