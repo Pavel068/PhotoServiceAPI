@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Photos;
+use App\Shares;
+use App\Users;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -41,13 +43,20 @@ class PhotosController extends Controller
     protected function checkOwner($photo_id)
     {
         $photo = Photos::find($photo_id);
-        return $photo->user_id == $this->user->id;
+        return $photo->owner_id == $this->user->id;
     }
 
     public function index()
     {
+        $photos = Photos::all();
+
+        foreach ($photos as &$photo) {
+            $photo['users'] = Shares::where('photo_id', '=', $photo['id'])->get()->pluck('user_to')->toArray();
+        }
+        unset($photo);
+
         return response()->json([
-            'data' => Photos::all()
+            'data' => $photos
         ], 200);
     }
 
@@ -73,7 +82,7 @@ class PhotosController extends Controller
             # save to DB
             $photo = Photos::create([
                 'url' => 'storage/' . $name,
-                'user_id' => $this->user->id
+                'owner_id' => $this->user->id
             ]);
 
             return response()->json([

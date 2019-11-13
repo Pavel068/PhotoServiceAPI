@@ -8,7 +8,7 @@ class Photos extends Model
 {
     protected $table = 'photos';
 
-    protected $fillable = ['url', 'name', 'user_id'];
+    protected $fillable = ['url', 'name', 'owner_id'];
 
     public function getUrlAttribute($value)
     {

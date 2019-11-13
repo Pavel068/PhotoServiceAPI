@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Users;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -68,8 +69,11 @@ class UserController extends Controller
         ], 201);
     }
 
-    public function search()
+    public function search(Request $request)
     {
+        $filter = '%' . $request->search . '%';
+        $users = Users::whereRaw("first_name LIKE '$filter' OR surname LIKE '$filter' OR phone LIKE '$filter'")->get();
 
+        return response()->json($users, 200);
     }
 }

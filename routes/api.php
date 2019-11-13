@@ -18,6 +18,8 @@ Route::post('logout', 'API\UserController@logout');
 Route::post('register', 'API\UserController@register');
 
 Route::group(['middleware' => 'auth:api'], function(){
+    Route::get('user', 'API\UserController@search');
+
     Route::get('photos', 'API\PhotosController@index');
     Route::get('photos/{id}', 'API\PhotosController@show');
     Route::post('photos', 'API\PhotosController@create');
