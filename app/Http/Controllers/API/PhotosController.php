@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class PhotosController extends Controller
 {
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = auth('api')->user();
+    }
+
     public function index()
     {
         return response()->json([
@@ -26,16 +33,30 @@ class PhotosController extends Controller
             if($request->file('photo')->isValid()) {
                 try {
                     $file = $request->file('photo');
-                    $name = rand(11111, 99999) . '.' . $file->getClientOriginalExtension();
+                    $name = md5(uniqid('_', true)) . '.' . $file->getClientOriginalExtension();
 
                     # save to DB
-                    $tickes = Photos::create(['url' => 'storage/'.$name]);
+                    $photo = Photos::create(['url' => 'storage/'.$name]);
 
                     $request->file('photo')->move("storage", $name);
-                } catch (Illuminate\Filesystem\FileNotFoundException $e) {
 
+                    return response()->json([
+                        'data' => $photo
+                    ], 200);
+                } catch (Illuminate\Filesystem\FileNotFoundException $e) {
+                    return response()->json([
+                        'error' => true
+                    ], 400);
                 }
+            } else {
+                return response()->json([
+                    'error' => true
+                ], 422);
             }
+        } else {
+            return response()->json([
+                'error' => true
+            ], 400);
         }
     }
 

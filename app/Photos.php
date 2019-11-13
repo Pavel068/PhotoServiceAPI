@@ -8,5 +8,10 @@ class Photos extends Model
 {
     protected $table = 'photos';
 
-    protected $fillable = ['url', 'name'];
+    protected $fillable = ['url', 'name', 'user_id'];
+
+    public function getUrlAttribute($value)
+    {
+        return 'http://192.168.20.1/' . $value;
+    }
 }
