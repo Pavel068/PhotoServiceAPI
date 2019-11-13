@@ -67,4 +67,9 @@ class UserController extends Controller
             'token' => $user->createToken('MyApp')->accessToken
         ], 201);
     }
+
+    public function search()
+    {
+
+    }
 }

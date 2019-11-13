@@ -23,4 +23,6 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('photos', 'API\PhotosController@create');
     Route::post('photos/{id}', 'API\PhotosController@update');
     Route::delete('photos/{id}', 'API\PhotosController@delete');
+
+    Route::post('photos/{id}/share', 'API\SharesController@sharePhoto');
 });

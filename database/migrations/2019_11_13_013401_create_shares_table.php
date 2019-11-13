@@ -22,7 +22,7 @@ class CreateSharesTable extends Migration
         });
 
         Schema::table('shares', function (Blueprint $table) {
-            $table->index(['photo_id', 'user_from', 'user_to']);
+            $table->unique(['photo_id', 'user_from', 'user_to']);
         });
     }
 
